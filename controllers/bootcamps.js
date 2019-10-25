@@ -15,8 +15,16 @@ const getBootcamps = async (req, res, next) => {
 // @desc    Get a single bootcamp
 // @route   GET /api/v1/bootcamps/:id
 // @access  Public
-const getBootcamp = (req, res, next) => {
-  res.status(200).json({ success: true, msg: `Get bootcamp ${req.params.id}` });
+const getBootcamp = async (req, res, next) => {
+  try {
+    const bootcamp = await Bootcamp.findById(req.params.id);
+    if (!bootcamp) {
+      return res.status(400).json({ success: false });
+    }
+    res.status(200).json({ success: true, data: bootcamp });
+  } catch (error) {
+    res.status(400).json({ success: false });
+  }
 };
 
 // @desc    Create new bootcamp
