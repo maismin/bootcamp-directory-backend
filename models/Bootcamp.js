@@ -131,6 +131,12 @@ BootcampSchema.pre('save', async function(next) {
   next();
 });
 
+// Cascade delete courses when a bootcamp is deleted
+BootcampSchema.pre('remove', async function(next) {
+  await this.model('Course').deleteMany({ bootcamp: this._id });
+  next();
+});
+
 // Populated virtual that contains docs from another collection
 // Grabs documents from the ref model whose foreignField matches this document's local field
 BootcampSchema.virtual('courses', {
