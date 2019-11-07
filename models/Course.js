@@ -61,12 +61,12 @@ CourseSchema.statics.getAverageCost = async function(bootcampId) {
   }
 };
 
-// Gall getAverageCost after save
+// Call getAverageCost after save
 CourseSchema.post('save', function() {
   this.constructor.getAverageCost(this.bootcamp);
 });
 
-// Gall getAverageCost before save
+// Call getAverageCost before save
 CourseSchema.pre('remove', function() {
   this.constructor.getAverageCost(this.bootcamp);
 });
