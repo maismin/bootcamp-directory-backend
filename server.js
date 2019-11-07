@@ -13,6 +13,7 @@ const errorHandler = require('./middleware/error');
 const connectDB = require('./config/database');
 // Route files
 const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 
 // Connect to database
 connectDB();
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/bootcamps', bootcamps);
+app.use('/api/v1/courses', courses);
 
 app.use(errorHandler);
 
