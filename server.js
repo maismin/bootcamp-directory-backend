@@ -14,6 +14,7 @@ const morgan = require('morgan');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/database');
 // Route files
+const auth = require('./routes/auth');
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
 
@@ -36,6 +37,7 @@ app.use(fileupload());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/v1/auth', auth);
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
 
