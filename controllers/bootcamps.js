@@ -119,6 +119,16 @@ const deleteBootcamp = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Check that the user owns the bootcamp
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to delete this bootcamp`,
+        401,
+      ),
+    );
+  }
+
   bootcamp.remove();
 
   return res.status(200).json({ sucess: true, data: bootcamp });
