@@ -131,7 +131,7 @@ const deleteBootcamp = asyncHandler(async (req, res, next) => {
 
   bootcamp.remove();
 
-  return res.status(200).json({ sucess: true, data: bootcamp });
+  return res.status(200).json({ sucess: true, data: {} });
 });
 
 // @desc    Upload photo for bootcamp
