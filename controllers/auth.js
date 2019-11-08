@@ -2,6 +2,30 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
 
+// Get token from model, create cookie, and send response
+const sendTokenResponse = (user, statusCode, res) => {
+  // Create token
+  const token = user.getSignedJwtToken();
+
+  // Cookie options
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+    ),
+    httpOnly: true, // Prevent cookies from being accessed client side
+  };
+
+  // Add secure option for production
+  if (process.env.NODE_ENV === 'production') {
+    options.secure = true;
+  }
+
+  res
+    .status(statusCode)
+    .cookie('token', token, options)
+    .json({ success: true, token });
+};
+
 // @desc    Register user
 // @route   POST /api/v1/auth/register
 // @access  Public
@@ -16,10 +40,7 @@ const register = asyncHandler(async (req, res, next) => {
     role,
   });
 
-  // Create token
-  const token = user.getSignedJwtToken();
-
-  res.status(201).json({ success: true, token });
+  sendTokenResponse(user, 200, res);
 });
 
 // @desc    Login user
@@ -47,10 +68,7 @@ const login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Invalid credentials', 401));
   }
 
-  // Create token
-  const token = user.getSignedJwtToken();
-
-  res.status(201).json({ success: true, token });
+  sendTokenResponse(user, 200, res);
 });
 
 module.exports = {
