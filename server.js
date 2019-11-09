@@ -54,6 +54,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+// Prevent HTTP parameter pollution
 app.use(hpp());
 
 // Enable CORS
