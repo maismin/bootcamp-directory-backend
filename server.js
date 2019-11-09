@@ -14,6 +14,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
 const morgan = require('morgan');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/database');
@@ -51,6 +52,8 @@ const limiter = rateLimit({
   max: 100, // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
+
+app.use(hpp());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
